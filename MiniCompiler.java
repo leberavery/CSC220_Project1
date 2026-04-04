@@ -16,6 +16,11 @@ public class MiniCompiler {
             System.out.print(t + ", ");
         }
         System.out.print("]");
+
+        System.out.println("\nTesting Validator...");
+        Parser parse = new Parser();
+        parse.Expression(tokens);
+        System.out.println("Validator Success!: No Errors Thrown");
     }
 
     public static List<String> tokenizer(String expression) {
