@@ -7,50 +7,71 @@ public class MiniCompiler {
         String expression = sc.nextLine();
 
         sc.close();
-
+        
+        /*
+        * Tokenizer
+        */
         List<String> tokens = tokenizer(expression);
         
         System.out.print("Tokens: [");
         for (String t : tokens) {
         
-            System.out.print(t + ", ");
+            System.out.print(t + " ");
         }
         System.out.print("]");
 
+        /*
+        * Parser
+        */
         System.out.println("\nTesting Validator...");
         Parser parse = new Parser();
-        parse.Expression(tokens);
+        parse.Expression(new LinkedList<>(tokens));
         System.out.println("Validator Success!: No Errors Thrown");
+
+        /*
+        * Expression Tree Generator
+        */
+        ASTGenerator generator = new ASTGenerator(new LinkedList<>(tokens));
+        Node ast = generator.build();
+        
+        System.out.println("ROOT: " + ast.value);
+        System.out.println("LEFT: " + ast.left.value);
+        System.out.println("RIGHT: " + ast.right.value);
+        
+        System.out.println("\nExpression Tree: ");
+        
+        TreePrinter.print(ast, 0);
+        
+        int result = Evaluator.evaluate(ast);
+        System.out.println("\nResult: "+result);
+        
     }
 
     public static List<String> tokenizer(String expression) {
-        List<String> tokens = new ArrayList<>();
-        String current = "";
+      List<String> tokens = new ArrayList<>();
+       String current = "";
 
-        for (int i = 0; i < expression.length(); i++) {
-            char c = expression.charAt(i);
-            
-            //adds numbers or letters
-            if (Character.isLetterOrDigit(c)) {
-                current += c;
-            }
-            //adds operators, parenthesis, etc.
-            else {
-                if (!current.isEmpty()) {
-                    tokens.add(current);
-                    current = "";
-                }
+     for (int i = 0; i < expression.length(); i++) {
+           char c = expression.charAt(i);
 
-                if (!Character.isWhitespace(c)) {
-                    tokens.add(Character.toString(c));
-                }
-            }
-        }
-        //Adds any left over tokens to the list
-        if (!current.isEmpty()) {
-            tokens.add(current);
-        }
+         if (Character.isDigit(c)) {
+               current += c;
+         } else {
+               if (!current.isEmpty()) {
+                 tokens.add(current);
+                   current = "";
+               }
 
-        return tokens;
-    }
+               if (!Character.isWhitespace(c)) {
+                  tokens.add(Character.toString(c));
+               }
+         }
+       }
+
+       if (!current.isEmpty()) {
+          tokens.add(current);
+       }
+
+       return tokens;
+   }
 }
