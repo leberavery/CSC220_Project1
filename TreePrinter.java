@@ -30,23 +30,29 @@ public class TreePrinter {
         }
     }
 
-    private static void fill(Node node, List<List<String>> canvas, int row, int col, int offset) {
+        private static void fill(Node node, List<List<String>> canvas, int row, int col, int offset) {
         if (node == null || row >= canvas.size()) return;
 
+        // Center the value string on the 'col' position
         write(canvas, row, col, node.value);
 
-        if (offset < 1) offset = 1;
-
-        // left child
+        // Calculate vertical spacing (skip one row for the slash)
+        int nextRow = row + 2;
+        
+        // Left Child
         if (node.left != null) {
-            canvas.get(row + 1).set(col - offset, "/");
-            fill(node.left, canvas, row + 2, col - offset * 2, offset / 2);
+            // Place the slash halfway between parent and child
+            canvas.get(row + 1).set(col - offset / 2, "/");
+            // Recursive call with reduced offset
+            fill(node.left, canvas, nextRow, col - offset, offset / 2);
         }
 
-        // right child
+        // Right Child
         if (node.right != null) {
-            canvas.get(row + 1).set(col + offset, "\\");
-            fill(node.right, canvas, row + 2, col + offset * 2, offset / 2);
+            // Place the backslash halfway between parent and child
+            canvas.get(row + 1).set(col + offset / 2, "\\");
+            // Recursive call with reduced offset
+            fill(node.right, canvas, nextRow, col + offset, offset / 2);
         }
     }
 

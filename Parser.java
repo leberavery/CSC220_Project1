@@ -1,16 +1,18 @@
 /*
-    * Purpose: Checks whether the input has the correct grammar using recursive descent parsing.
-    *      Grammar: 
-    *       E → E + T | E - T | T 
-    *       T → T * F | T / F | F
-    *       F → (E) | number
-    *      Logic: 
-    *       1. The parser calls Expression(), which accepts an expression list make up of String tokens.
-    *       2. Expression() calls Term() which calls Factor(). 
-    *           2a. Expression() handles addition and subtraction.
-    *           2b. Term() handles multiplication and division.
-    *           2c. Factor() handles parantheses and numbers.
-    *      3. If this program runs without throwing any errors, the expression is gramatically valid and can be solved.
+* Code Authors: Avery Leber and Maya Thomas
+* Instructor: Dr. Bhuiyan   CSC220
+* Code Purpose: Checks whether the expression has the correct grammar using recursive descent parsing.
+*      Grammar: 
+*       E → E + T | E - T | T 
+*       T → T * F | T / F | F
+*       F → (E) | number
+*      Logic: 
+*       1. The parser calls Expression(), which accepts an expression list make up of String tokens.
+*       2. Expression() calls Term() which calls Factor(). 
+*           2a. Expression() handles addition and subtraction.
+*           2b. Term() handles multiplication and division.
+*           2c. Factor() handles parantheses and numbers.
+*      3. If this program runs without throwing any errors, the expression is gramatically valid and can be solved.
 */
 
 import java.util.*;
@@ -18,16 +20,16 @@ import java.util.*;
 public class Parser {
     /*
      * Purpose: First method the parser calls. Handles addition and subtraction within the expression.
-        Logic: 
-        One expression list is made up of several individual expressions. 
-        Every expression is made up of three parts: a left term, an operator, and a right term.
-        1. Find the first left term of the expression list by calling Term().
-        2. If the expression list is not empty and the head of the linked list is "*" or "/":   
-            2a. Store the operator in a pointer
-            2b. Remove the operator from the head of the expression list
-            2c. Find the right node of the expression by calling Term()
-            2d. Find the value of the sum/difference of left and right by calling combine() and assign it to the left node
-        3. Return the left node
+     *  Logic: 
+     *  One expression list is made up of several individual expressions. 
+     *  Every expression is made up of three parts: a left term, an operator, and a right term.
+     *  1. Find the first left term of the expression list by calling Term().
+     *  2. If the expression list is not empty and the head of the linked list is "*" or "/":   
+     *      2a. Store the operator in a pointer
+     *      2b. Remove the operator from the head of the expression list
+     *      2c. Find the right node of the expression by calling Term()
+     *      2d. Find the value of the sum/difference of left and right by calling combine() and assign it to the left node
+     *  3. Return the left node
     */
     public double Expression(List<String> input) {
         double left = Term(input);
@@ -123,7 +125,7 @@ public class Parser {
             input.removeFirst();
             return nodeDouble;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Syntax Error: Program expected a number but received " + node);
+            throw new NumberFormatException("Syntax Error: Expected a number but received " + node);
         }
 
     }
